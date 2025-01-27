@@ -1,0 +1,29 @@
+name: Deploy to Pinata
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install IPFS CLI
+      run: |
+        curl -fsSL https://dist.ipfs.tech/kubo/ | sh -s latest
+        sudo mv ipfs /usr/local/bin/ipfs
+
+    - name: Upload files to Pinata
+      env:
+        PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
+        PINATA_API_SECRET: ${{ secrets.PINATA_API_SECRET }}
+      run: |
+        curl -X POST https://api.pinata.cloud/pinning/pinFileToIPFS \
+        -H "pinata_api_key: $PINATA_API_KEY" \
+        -H "pinata_secret_api_key: $PINATA_API_SECRET" \
+        -F file=@src/index.html
