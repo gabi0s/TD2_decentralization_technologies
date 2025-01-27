@@ -1,4 +1,4 @@
-# Tic-Tac-Toe
+### decentralied website
 
 Ce projet est un site web décentralisé hébergé via IPFS.
 
